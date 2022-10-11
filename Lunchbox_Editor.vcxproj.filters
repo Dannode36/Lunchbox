@@ -63,7 +63,7 @@
     <ClCompile Include="src\PhysicsSystem.cpp">
       <Filter>Header Files\ENGINE\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\Types.cpp">
+    <ClCompile Include="src\VecOverloads.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

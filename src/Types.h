@@ -23,5 +23,5 @@ Vec2 operator+(Vec2 a, Vec2 b);
 Vec2 operator-(Vec2 a, Vec2 b);
 Vec2 operator-(Vec2 a);
 Vec2 operator*(Vec2 a, Vec2 b);
-Vec2 operator*(Vec2 a, float b);
+Vec2 operator*(Vec2 a, double b);
 Vec2 operator/(Vec2 a, Vec2 b);
