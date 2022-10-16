@@ -1,9 +1,9 @@
 #include "PhysicsSystem.h"
 #include "Overlord.h"
 #include "Components.h"
+#include "Globals.h"
 #include <iostream>
 #include <vector>
-
 
 extern Overlord gOverlord;
 
@@ -27,6 +27,9 @@ void PhysicsSystem::Update(float dt) {
 
 		if (rigidBody.debug) {
 			std::cout << "X:" << transform.position.y << " Current Y-Velocity: " << rigidBody.velocity.y <<"\n";
+		}
+		if (Global::test) {
+			printf("test is enabled");
 		}
 	}
 }

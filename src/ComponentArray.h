@@ -15,7 +15,7 @@ class ComponentArray : public IComponentArray
 public:
 	void InsertData(Entity entity, T component)
 	{
-		assert(mEntityToIndexMap.find(entity) == mEntityToIndexMap.end() && "Component added to same entity more than once.");
+		//assert(mEntityToIndexMap.find(entity) == mEntityToIndexMap.end() && "Component added to same entity more than once.");
 
 		// Put new entry at end and update the maps
 		size_t newIndex = mSize;
@@ -27,7 +27,7 @@ public:
 
 	void RemoveData(Entity entity)
 	{
-		assert(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end() && "Removing non-existent component.");
+		//assert(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end() && "Removing non-existent component.");
 
 		// Copy element at end into deleted element's place to maintain density
 		size_t indexOfRemovedEntity = mEntityToIndexMap[entity];
@@ -47,7 +47,7 @@ public:
 
 	T& GetData(Entity entity)
 	{
-		assert(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end() && "Retrieving non-existent component.");
+		//assert(mEntityToIndexMap.find(entity) != mEntityToIndexMap.end() && "Retrieving non-existent component.");
 
 		// Return a reference to the entity's component
 		return mComponentArray[mEntityToIndexMap[entity]];
@@ -76,5 +76,5 @@ private:
 	std::unordered_map<int, Entity> mIndexToEntityMap;
 
 	// Total size of valid entries in the array.
-	size_t mSize;
+	size_t mSize{};
 };

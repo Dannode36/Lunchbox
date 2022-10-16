@@ -1,19 +1,7 @@
 #pragma once
-struct Vec2
-{
-	float x;
-	float y;
-};
-struct Vec3
-{
-	float x;
-	float y;
-	float z;
-};
-struct Vec4
-{
-	float x;
-	float y;
-	float z;
-	float w;
-};
+#include <algorithm>
+
+template <typename T>
+T clip(const T& n, const T& lower, const T& upper) {
+	return std::max(lower, std::min(n, upper));
+}
