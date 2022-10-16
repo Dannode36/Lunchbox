@@ -111,7 +111,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\craft\source\repos\Lunchbox_Editor\Lunchbox_Editor\src\vendor\sfml\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;sfml-system.lib;sfml-window.lib;sfml-graphics.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -153,7 +153,6 @@
     <ClCompile Include="src\Types.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Downloads\imgui-sfml-2.5\imgui-sfml-2.5\imconfig-SFML.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Dialog.h" />
     <ClInclude Include="src\ComponentArray.h" />
@@ -289,6 +288,9 @@
     <None Include="src\vendor\sfml\include\SFML\System\Utf.inl" />
     <None Include="src\vendor\sfml\include\SFML\System\Vector2.inl" />
     <None Include="src\vendor\sfml\include\SFML\System\Vector3.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="src\fonts\Akira-Expanded.otf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
