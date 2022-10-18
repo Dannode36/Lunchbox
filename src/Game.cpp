@@ -52,3 +52,25 @@ void Application::InitECS() {
     }
     float dt = 0.0f;*/
 }
+
+void CalculateGridRenderBounds(int& fromX, int& toX, int& fromY, int& toY, int mapSize) {
+    if (fromX < 0)
+        fromX = 0;
+    else if (fromX >= mapSize)
+        fromX = mapSize - 1;
+
+    if (toX < 0)
+        toX = 0;
+    else if (toX >= mapSize)
+        toX = mapSize - 1;
+
+    if (fromY < 0)
+        fromY = 0;
+    else if (fromY >= mapSize)
+        fromY = mapSize - 1;
+
+    if (toY < 0)
+        toY = 0;
+    else if (toY >= mapSize)
+        toY = mapSize - 1;
+}

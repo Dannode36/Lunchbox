@@ -12,3 +12,5 @@ public:
 private:
 
 };
+
+void CalculateGridRenderBounds(int& fromX, int& toX, int& fromY, int& toY, int mapSize);
