@@ -1,5 +1,6 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
+#include "imgui_internal.h"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
@@ -27,19 +28,49 @@ int fromY{};
 int toX{};
 int toY{};
 
+float drawColourArray[3];
+sf::Color drawColour;
+
+bool draw{ true };
+
 int main() {
+
     sf::Time dt;
     sf::Time lastdt;
     gOverlord.Init();
 
     sf::RenderWindow window(sf::VideoMode(resX, resY), "Lunchbox");
     window.setFramerateLimit(60);
-    ImGui::SFML::Init(window);
 
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+    //io.ConfigViewportsNoAutoMerge = true;
+    //io.ConfigViewportsNoTaskBarIcon = true;
+    //io.MouseDownOwned
+
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsLight();
+
+    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
+
+    ImGui::SFML::Init(window);
     sf::View view;
     view.setSize(resX, resY);
     view.setCenter(window.getSize().x / 2.f, window.getSize().y / 2.f);
-    
+
     sf::Vector2i mousePosScreen;
     sf::Vector2i mousePosWindow;
     sf::Vector2f mousePosView;
@@ -72,21 +103,32 @@ int main() {
         {
             tileMap[x][y].setSize(sf::Vector2f(gridSize_f, gridSize_f));
             tileMap[x][y].setFillColor(sf::Color::White);
-            tileMap[x][y].setOutlineThickness(1.f);
+            tileMap[x][y].setOutlineThickness(2.f);
             tileMap[x][y].setOutlineColor(sf::Color::Black);
             tileMap[x][y].setPosition(x * gridSize_f, y * gridSize_f);
         }
     }
 
-    sf::RectangleShape tileSelector(sf::Vector2f(gridSize_f, gridSize_f));
+    sf::RectangleShape tileSelector(sf::Vector2f(gridSize_f - tileMap[0][0].getOutlineThickness(), gridSize_f - tileMap[0][0].getOutlineThickness()));
     tileSelector.setFillColor(sf::Color::Transparent);
     tileSelector.setOutlineThickness(1.f);
     tileSelector.setOutlineColor(sf::Color::Blue);
-        
+
     sf::Clock deltaClock;
     while (window.isOpen()) {
+        ImGui::SFML::Update(window, dt);
         dt = deltaClock.restart();
 
+        mousePosScreen = sf::Mouse::getPosition();
+        mousePosWindow = sf::Mouse::getPosition(window);
+        window.setView(view);
+        mousePosView = window.mapPixelToCoords(mousePosWindow);
+        if (mousePosView.x >= 0.f) {
+            mousePosGrid.x = (mousePosView.x / gridSize_u);
+        }
+        if (mousePosView.y >= 0.f) {
+            mousePosGrid.y = (mousePosView.y / gridSize_u);
+        }
         //Events
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -107,16 +149,32 @@ int main() {
                 //view.zoom(event.mouseWheelScroll.delta + 0.1f);
                 std::cout<< event.mouseWheelScroll.delta << "\n";
             }
+            if (io.WantCaptureMouse) {
+                draw = false;
+            }
+            else {
+                draw = true;
+            }
         }
 
         float fps = 1.f / dt.asSeconds();
         lastdt = dt;
 
-        ImGui::SFML::Update(window, dt);
+        //ImGui Window Logic
+        //ImGui::SFML::Update(window, dt);
 
-        ImGui::Begin("window");
+        ImGui::Begin("Colour");
+
         ImGui::Button(std::to_string(fps).c_str());
+
+        if (ImGui::ColorPicker3("Colour", drawColourArray)) {
+            drawColour.r = drawColourArray[0] * 255;
+            drawColour.g = drawColourArray[1] * 255;
+            drawColour.b = drawColourArray[2] * 255;
+            std::cout << drawColourArray[0] << "\n";
+        }
         ImGui::End();
+
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { //Up
             view.move(0.f, -viewSpeed * dt.asSeconds());
@@ -132,19 +190,16 @@ int main() {
             view.move(viewSpeed * dt.asSeconds(), 0.f);
         }
 
-        mousePosScreen = sf::Mouse::getPosition();
-        mousePosWindow = sf::Mouse::getPosition(window);
-        window.setView(view);
-        mousePosView = window.mapPixelToCoords(mousePosWindow);
-        if (mousePosView.x >= 0.f) {
-            mousePosGrid.x = (mousePosView.x / gridSize_u);
-        }
-        if (mousePosView.y >= 0.f) {
-            mousePosGrid.y = (mousePosView.y / gridSize_u);
-        }
+        
 
+        //Drawing Input
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            tileMap[mousePosGrid.x][mousePosGrid.y].setFillColor(sf::Color::Green);
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                tileMap[mousePosGrid.x][mousePosGrid.y].setFillColor(drawColour);
+            }
+            else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+                tileMap[mousePosGrid.x][mousePosGrid.y].setFillColor(sf::Color::White);
+            }
         }
 
         //Update game objects
@@ -152,40 +207,37 @@ int main() {
         tileSelector.setPosition(mousePosGrid.x * gridSize_f, mousePosGrid.y * gridSize_f);
 
         window.clear();
-        window.setView(view);
 
-        //Draw Game;
-        //shape.setPosition(window.getDefaultView().getCenter().x - shape.getRadius(), window.getDefaultView().getCenter().y - shape.getRadius());
+        //Draw Canvas;
+        window.setView(view);
         window.draw(shape);
 
-        fromX = view.getCenter().x / gridSize_f - 10;
-        toX = view.getCenter().x / gridSize_f + 11;
-        fromY = view.getCenter().y / gridSize_f - 10;
-        toY = view.getCenter().y / gridSize_f + 11;
+        fromX = view.getCenter().x / gridSize_f - ((view.getSize().x / 2) / gridSize_u) - 1;
+        toX = view.getCenter().x / gridSize_f + ((view.getSize().x / 2) / gridSize_u) + 1;
+        fromY = view.getCenter().y / gridSize_f - ((view.getSize().y / 2) / gridSize_u) - 1;
+        toY = view.getCenter().y / gridSize_f + ((view.getSize().y / 2) / gridSize_u) + 1;
         CalculateGridRenderBounds(fromX, toX, fromY, toY, mapSize);
 
-        /*for (int x = fromX; x < toX; x++)
+        for (int x = fromX; x < toX; x++)
         {
             for (int y = fromY; y < toY; y++)
             {
                 window.draw(tileMap[x][y]);
             }
-        }*/
+        }
 
-        for (int x = 0; x < mapSize; x++)
+        /*for (int x = 0; x < mapSize; x++)
         {
             for (int y = 0; y < mapSize; y++)
             {
                 window.draw(tileMap[x][y]);
             }
-        }
+        }*/
 
         window.draw(tileSelector);
 
-        window.setView(window.getDefaultView());
         //Draw UI
-
-        ImGui::SFML::Render(window);
+        window.setView(window.getDefaultView());
 
         std::stringstream ss;
         ss << "Screen: " << mousePosScreen.x << " " << mousePosScreen.y << "\n"
@@ -196,6 +248,7 @@ int main() {
 
         window.draw(text);
 
+        ImGui::SFML::Render(window);
         window.display();
     }
 

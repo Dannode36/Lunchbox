@@ -40,6 +40,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\ENGINE\Rendering">
+      <UniqueIdentifier>{620c4c69-5c0f-437d-a726-1ae5857f2cdc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\vendor\imgui\imgui.cpp">
@@ -454,6 +457,9 @@
     </ClInclude>
     <ClInclude Include="src\vendor\imgui\imconfig-SFML.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LunchboxRendering.h">
+      <Filter>Header Files\ENGINE\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

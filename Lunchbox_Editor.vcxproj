@@ -160,6 +160,7 @@
     <ClInclude Include="src\Components.h" />
     <ClInclude Include="src\DialogSystem.h" />
     <ClInclude Include="src\Globals.h" />
+    <ClInclude Include="src\LunchboxRendering.h" />
     <ClInclude Include="src\Types.h" />
     <ClInclude Include="src\EntityManager.h" />
     <ClInclude Include="src\Math.h" />

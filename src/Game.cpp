@@ -57,20 +57,28 @@ void CalculateGridRenderBounds(int& fromX, int& toX, int& fromY, int& toY, int m
     if (fromX < 0)
         fromX = 0;
     else if (fromX >= mapSize)
-        fromX = mapSize - 1;
+        fromX = mapSize;
 
     if (toX < 0)
         toX = 0;
     else if (toX >= mapSize)
-        toX = mapSize - 1;
+        toX = mapSize;
 
     if (fromY < 0)
         fromY = 0;
     else if (fromY >= mapSize)
-        fromY = mapSize - 1;
+        fromY = mapSize;
 
     if (toY < 0)
         toY = 0;
     else if (toY >= mapSize)
-        toY = mapSize - 1;
+        toY = mapSize;
+}
+bool IsMouseOwnedImGui(ImGuiIO& io) {
+    for (int i = 0; i < IM_ARRAYSIZE(io.MouseDownOwned); i++) {
+        if (io.MouseDownOwned[i] == true) {
+            return true;
+        }
+    }
+    return false;
 }

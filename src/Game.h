@@ -14,3 +14,5 @@ private:
 };
 
 void CalculateGridRenderBounds(int& fromX, int& toX, int& fromY, int& toY, int mapSize);
+
+bool IsMouseOwnedImGui(ImGuiIO& io);
