@@ -10,12 +10,14 @@
 class Application
 {
 public:
-	int resX;
-	int resY;
-	float viewSpeed;
+	int resX{};
+	int resY{};
+	float viewSpeed{};
 
-	float drawColourArray[3];
-	sf::Color drawColour;
+	double dragSpeedCoefficient{1};
+
+	float drawColourArray[3]{0};
+	sf::Color drawColour{};
 
 	int fromX{};
 	int fromY{};
@@ -29,7 +31,7 @@ public:
 
 	void Update();
 	void UpdateEvents(sf::RenderWindow& window);
-	void Start(int resX, int resY, int viewSpeed);
+	int Start(int resX, int resY, float viewSpeed);
 
 	std::vector<std::vector<sf::RectangleShape>> LoadTileMap(int mapSize);
 private:
@@ -39,6 +41,7 @@ private:
 	unsigned gridSize_u{ static_cast<unsigned>(gridSize_f) };
 
 	sf::Vector2i mousePosScreen;
+	sf::Vector2i mousePosScreenLast;
 	sf::Vector2i mousePosWindow;
 	sf::Vector2f mousePosView;
 	sf::Vector2u mousePosGrid;

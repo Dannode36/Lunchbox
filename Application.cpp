@@ -10,15 +10,16 @@ Application::~Application()
 {
 }
 
-
-void Application::Start(int resX, int resY, int viewSpeed)
+int Application::Start(int argResX, int argResY, float argViewSpeed)
 {
     const int mapSize{ 64 };
-    this->resX = resX;
-    this->resY = resY;
-    this->viewSpeed = viewSpeed;
+    resX = argResX;
+    resY = argResY;
+    viewSpeed = argViewSpeed;
 
     sf::Time dt;
+    sf::Time lastdt;
+
     sf::RenderWindow window(sf::VideoMode(resX, resY), "Lunchbox");
     window.setFramerateLimit(60);
 
@@ -48,6 +49,7 @@ void Application::Start(int resX, int resY, int viewSpeed)
         dt = deltaClock.restart();
         ImGui::SFML::Update(window, dt);
 
+        mousePosScreenLast = mousePosScreen;
         mousePosScreen = sf::Mouse::getPosition();
         mousePosWindow = sf::Mouse::getPosition(window);
         window.setView(view);
@@ -61,8 +63,10 @@ void Application::Start(int resX, int resY, int viewSpeed)
         UpdateEvents(window);
 
         //ImGui Windows
-        char array[10];
-        sprintf_s(array, "%f", io.Framerate);
+
+        //fps
+        float fps = 1.f / dt.asSeconds();
+        lastdt = dt;
 
         std::stringstream ss;
         ss << "Screen: " << mousePosScreen.x << " " << mousePosScreen.y << "\n"
@@ -71,7 +75,7 @@ void Application::Start(int resX, int resY, int viewSpeed)
             << "Grid: " << mousePosGrid.x << " " << mousePosGrid.y << "\n";
 
         ImGui::Begin("Colour");
-        ImGui::Text(array);
+        ImGui::Text(std::to_string(fps).c_str());
         if (ImGui::ColorEdit3("Colour", drawColourArray)) {
             drawColour.r = drawColourArray[0] * 255;
             drawColour.g = drawColourArray[1] * 255;
@@ -93,6 +97,16 @@ void Application::Start(int resX, int resY, int viewSpeed)
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { //Right
             view.move(viewSpeed * dt.asSeconds(), 0.f);
         }
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse) {
+            tileMap[mousePosGrid.x][mousePosGrid.y].setFillColor(drawColour);
+        }
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && !ImGui::GetIO().WantCaptureMouse) {
+            view.move(-(mousePosScreen.x - mousePosScreenLast.x) * dragSpeedCoefficient, -(mousePosScreen.y - mousePosScreenLast.y) * dragSpeedCoefficient);
+        }
+
+        //Random stuff TODO
+        Update();
 
         //RENDERING
         window.clear();
@@ -122,8 +136,13 @@ void Application::Start(int resX, int resY, int viewSpeed)
 
         ImGui::SFML::Render(window);
         window.display();
-
     }
+    ImGui::SFML::Shutdown();
+    return 0;
+}
+
+void Application::Update() {
+
 }
 
 void Application::UpdateEvents(sf::RenderWindow& window)
@@ -139,11 +158,12 @@ void Application::UpdateEvents(sf::RenderWindow& window)
 
         if (event.type == sf::Event::MouseWheelScrolled) {
             if (event.mouseWheelScroll.delta < 0) {
-                view.zoom(1.1f);
-                printf("zoomed in");
+                view.zoom(2.f);
+                dragSpeedCoefficient *= 2.f;
             }
             else if (event.mouseWheelScroll.delta > 0) {
-                view.zoom(0.9f);
+                view.zoom(0.5f);
+                dragSpeedCoefficient *= 0.5f;
             }
         }
     }
