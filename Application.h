@@ -12,6 +12,8 @@ class Application
 public:
 	int resX{};
 	int resY{};
+
+	const int mapSize{ 32 };
 	float viewSpeed{};
 
 	double dragSpeedCoefficient{1};
@@ -24,7 +26,11 @@ public:
 	int toX{};
 	int toY{};
 
+	std::string lastError{};
+
 	sf::View view{};
+
+	std::vector<std::vector<sf::RectangleShape>> tileMap;
 
 	Application();
 	~Application();
@@ -34,6 +40,7 @@ public:
 	int Start(int resX, int resY, float viewSpeed);
 
 	std::vector<std::vector<sf::RectangleShape>> LoadTileMap(int mapSize);
+	void Draw(int x, int y, sf::Color& colour);
 private:
 	void CalculateGridRenderBounds(int& fromX, int& toX, int& fromY, int& toY, int mapSize);
 

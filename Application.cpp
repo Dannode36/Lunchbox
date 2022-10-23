@@ -10,9 +10,23 @@ Application::~Application()
 {
 }
 
+void Application::Draw(int x, int y, sf::Color& colour) {
+
+    if (x < mapSize && y < mapSize) {
+        tileMap[x][y].setFillColor(drawColour);
+    }
+    else
+    {
+        std::string error{ "ERROR: Tried to draw out of vector bounds" };
+        if (lastError != error) {
+            std::cout << error << "\n";
+            lastError = error;
+        }
+    }
+}
+
 int Application::Start(int argResX, int argResY, float argViewSpeed)
 {
-    const int mapSize{ 64 };
     resX = argResX;
     resY = argResY;
     viewSpeed = argViewSpeed;
@@ -28,6 +42,14 @@ int Application::Start(int argResX, int argResY, float argViewSpeed)
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
+    //// Update and Render additional Platform Windows
+    //if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    //{
+    //    ImGui::UpdatePlatformWindows();
+    //    ImGui::RenderPlatformWindowsDefault();
+    //}
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -36,7 +58,7 @@ int Application::Start(int argResX, int argResY, float argViewSpeed)
     view.setSize(resX, resY);
     view.setCenter(window.getSize().x / 2.f, window.getSize().y / 2.f);
 
-    auto tileMap = LoadTileMap(mapSize);
+    tileMap = LoadTileMap(mapSize);
 
     sf::RectangleShape tileSelector(sf::Vector2f(gridSize_f - tileMap[0][0].getOutlineThickness(), gridSize_f - tileMap[0][0].getOutlineThickness()));
     tileSelector.setFillColor(sf::Color::Transparent);
@@ -84,6 +106,11 @@ int Application::Start(int argResX, int argResY, float argViewSpeed)
         ImGui::Text(ss.str().c_str());
         ImGui::End();
 
+        ImGui::Begin("DockTest");
+        ImGui::Text("Test Window");
+        ImGui::End();
+
+        //Keyboard & mouse
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { //Up
             view.move(0.f, -viewSpeed * dt.asSeconds());
         }
@@ -99,7 +126,7 @@ int Application::Start(int argResX, int argResY, float argViewSpeed)
         }
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse) {
-            tileMap[mousePosGrid.x][mousePosGrid.y].setFillColor(drawColour);
+            Draw(mousePosGrid.x, mousePosGrid.y, drawColour);
         }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && !ImGui::GetIO().WantCaptureMouse) {
             view.move(-(mousePosScreen.x - mousePosScreenLast.x) * dragSpeedCoefficient, -(mousePosScreen.y - mousePosScreenLast.y) * dragSpeedCoefficient);
@@ -124,10 +151,15 @@ int Application::Start(int argResX, int argResY, float argViewSpeed)
         {
             for (int y = fromY; y < toY; y++)
             {
+                float t = view.getSize().x / window.getDefaultView().getSize().x;
+                tileMap[x][y].setOutlineThickness(t);
+
                 window.draw(tileMap[x][y]);
             }
         }
 
+        tileSelector.setSize(sf::Vector2f(gridSize_f, gridSize_f));
+        tileSelector.setOutlineThickness(tileMap[1][1].getOutlineThickness());
         tileSelector.setPosition(mousePosGrid.x * gridSize_f, mousePosGrid.y * gridSize_f);
         window.draw(tileSelector);
 
@@ -158,12 +190,12 @@ void Application::UpdateEvents(sf::RenderWindow& window)
 
         if (event.type == sf::Event::MouseWheelScrolled) {
             if (event.mouseWheelScroll.delta < 0) {
-                view.zoom(2.f);
-                dragSpeedCoefficient *= 2.f;
+                view.zoom(1.1f);
+                dragSpeedCoefficient *= 1.1f;
             }
             else if (event.mouseWheelScroll.delta > 0) {
-                view.zoom(0.5f);
-                dragSpeedCoefficient *= 0.5f;
+                view.zoom(0.9f);
+                dragSpeedCoefficient *= 0.9f;
             }
         }
     }
@@ -183,7 +215,7 @@ std::vector<std::vector<sf::RectangleShape>> Application::LoadTileMap(int mapSiz
         {
             tileMap[x][y].setSize(sf::Vector2f(gridSize_f, gridSize_f));
             tileMap[x][y].setFillColor(sf::Color::White);
-            tileMap[x][y].setOutlineThickness(2.f);
+            tileMap[x][y].setOutlineThickness(4.f);
             tileMap[x][y].setOutlineColor(sf::Color::Black);
             tileMap[x][y].setPosition(x * gridSize_f, y * gridSize_f);
         }
