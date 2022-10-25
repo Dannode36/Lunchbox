@@ -4,6 +4,18 @@
 
 std::deque<sf::Color> undoColourQueue;
 
+DrawTool::DrawTool()
+{
+}
+
+DrawTool::~DrawTool()
+{
+}
+
+void DrawTool::Draw() {
+
+}
+
 void BresenhamLine(TileMap& tileMap, int x1, int y1, int x2, int y2, const sf::Color& color)
 {
     x1 = clip(x1, 0, tileMap.size() - 1);
@@ -70,14 +82,14 @@ void BresenhamLine(TileMap& tileMap, int x1, int y1, int x2, int y2, const sf::C
 
 void BresenhamLineUndo(TileMap& tileMap, int x1, int y1, int x2, int y2)
 {
+    if (undoColourQueue.empty()) {
+        return;
+    }
+
     x1 = clip(x1, 0, tileMap.size() - 1);
     y1 = clip(y1, 0, tileMap.size() - 1);
     x2 = clip(x2, 0, tileMap.size() - 1);
     y2 = clip(y2, 0, tileMap.size() - 1);
-
-    if (undoColourQueue.size() == 0) {
-        return;
-    }
 
     int dx = x2 - x1;
     // if x1 == x2, then it does not matter what we set here

@@ -78,12 +78,22 @@ int Application::Start(int argResX, int argResY, float argViewSpeed)
         mousePosWindow = sf::Mouse::getPosition(window);
         window.setView(view);
         mousePosView = window.mapPixelToCoords(mousePosWindow);
+
         if (mousePosView.x >= 0.f) {
             mousePosGrid.x = (mousePosView.x / gridSize_u);
+        }
+        else
+        {
+            mousePosGrid.x = 0;
         }
         if (mousePosView.y >= 0.f) {
             mousePosGrid.y = (mousePosView.y / gridSize_u);
         }
+        else
+        {
+            mousePosGrid.y = 0;
+        }
+
         UpdateEvents(window);
 
         //ImGui Windows
@@ -212,6 +222,7 @@ void Application::UpdateEvents(sf::RenderWindow& window)
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Right) {
                     startPos = mousePosGrid;
+                    prevPos = mousePosGrid;
                     drawing = true;
                 }
             }
