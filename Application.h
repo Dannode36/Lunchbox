@@ -6,6 +6,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
+#include "DrawingTools.h"
 
 class Application
 {
@@ -30,7 +31,7 @@ public:
 
 	sf::View view{};
 
-	std::vector<std::vector<sf::RectangleShape>> tileMap;
+	TileMap tileMap;
 
 	Application();
 	~Application();
@@ -39,7 +40,7 @@ public:
 	void UpdateEvents(sf::RenderWindow& window);
 	int Start(int resX, int resY, float viewSpeed);
 
-	std::vector<std::vector<sf::RectangleShape>> LoadTileMap(int mapSize);
+	TileMap LoadTileMap(int mapSize);
 	void Draw(int x, int y, sf::Color& colour);
 private:
 	void CalculateGridRenderBounds(int& fromX, int& toX, int& fromY, int& toY, int mapSize);

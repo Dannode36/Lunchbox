@@ -1,6 +1,7 @@
 #include "Application.h"
 #include <iostream>
 #include <sstream>
+#include "DrawingTools.h"
 
 Application::Application()
 {
@@ -128,7 +129,10 @@ int Application::Start(int argResX, int argResY, float argViewSpeed)
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse) {
             Draw(mousePosGrid.x, mousePosGrid.y, drawColour);
         }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && !ImGui::GetIO().WantCaptureMouse) {
+        /*else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+
+        }*/
+        else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && !ImGui::GetIO().WantCaptureMouse) {
             view.move(-(mousePosScreen.x - mousePosScreenLast.x) * dragSpeedCoefficient, -(mousePosScreen.y - mousePosScreenLast.y) * dragSpeedCoefficient);
         }
 
@@ -177,6 +181,9 @@ void Application::Update() {
 
 }
 
+bool drawing{ false };
+TileMap temp;
+sf::Vector2u startPos;
 void Application::UpdateEvents(sf::RenderWindow& window)
 {
     sf::Event event;
@@ -198,13 +205,32 @@ void Application::UpdateEvents(sf::RenderWindow& window)
                 dragSpeedCoefficient *= 0.9f;
             }
         }
+
+        if (!ImGui::GetIO().WantCaptureMouse) {
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Right) {
+                    temp = tileMap;
+                    startPos = mousePosGrid;
+                    drawing = true;
+                }
+            }
+            else if ((event.type == sf::Event::MouseMoved) && drawing) {
+                tileMap = temp;
+                EFLALine(tileMap, startPos.x, startPos.y, mousePosGrid.x + 1, mousePosGrid.y + 1, drawColour);
+                //tileMap[mousePosGrid.x][mousePosGrid.y].setFillColor(drawColour);
+            }
+            else if (event.type == sf::Event::MouseButtonReleased) {
+                if (event.mouseButton.button == sf::Mouse::Right) {
+                    drawing = false;
+                }
+            }
+        }
     }
 }
 
+TileMap Application::LoadTileMap(int mapSize) {
 
-std::vector<std::vector<sf::RectangleShape>> Application::LoadTileMap(int mapSize) {
-
-    std::vector<std::vector<sf::RectangleShape>> tileMap;
+    TileMap tileMap;
 
     tileMap.resize(mapSize, std::vector<sf::RectangleShape>());
 
