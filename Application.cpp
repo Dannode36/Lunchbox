@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include "DrawingTools.h"
+#include "CustomUtil.h"
 
 Application::Application()
 {
@@ -182,8 +183,9 @@ void Application::Update() {
 }
 
 bool drawing{ false };
-TileMap temp;
 sf::Vector2u startPos;
+sf::Vector2u prevPos;
+
 void Application::UpdateEvents(sf::RenderWindow& window)
 {
     sf::Event event;
@@ -209,15 +211,14 @@ void Application::UpdateEvents(sf::RenderWindow& window)
         if (!ImGui::GetIO().WantCaptureMouse) {
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Right) {
-                    temp = tileMap;
                     startPos = mousePosGrid;
                     drawing = true;
                 }
             }
             else if ((event.type == sf::Event::MouseMoved) && drawing) {
-                tileMap = temp;
-                EFLALine(tileMap, startPos.x, startPos.y, mousePosGrid.x + 1, mousePosGrid.y + 1, drawColour);
-                //tileMap[mousePosGrid.x][mousePosGrid.y].setFillColor(drawColour);
+                BresenhamLineUndo(tileMap, startPos.x, startPos.y, clip<int>(prevPos.x, 0, mapSize - 1), clip<int>(prevPos.y, 0, mapSize - 1));
+                BresenhamLine(tileMap, startPos.x, startPos.y, clip<int>(mousePosGrid.x, 0, mapSize - 1), clip<int>(mousePosGrid.y, 0, mapSize - 1), drawColour);
+                prevPos = mousePosGrid;
             }
             else if (event.type == sf::Event::MouseButtonReleased) {
                 if (event.mouseButton.button == sf::Mouse::Right) {

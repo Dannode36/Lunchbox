@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="CustomUtil.cpp" />
     <ClCompile Include="DrawingTools.cpp" />
     <ClCompile Include="external\imgui\imgui-docking\imgui.cpp" />
     <ClCompile Include="external\imgui\imgui-docking\imgui_demo.cpp" />
@@ -145,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="CustomUtil.h" />
     <ClInclude Include="DrawingTools.h" />
     <ClInclude Include="external\imgui\imgui-docking\imconfig.h" />
     <ClInclude Include="external\imgui\imgui-docking\imgui.h" />
@@ -253,6 +255,7 @@
     <ClInclude Include="external\sfml\include\SFML\Window\Window.hpp" />
     <ClInclude Include="external\sfml\include\SFML\Window\WindowHandle.hpp" />
     <ClInclude Include="external\sfml\include\SFML\Window\WindowStyle.hpp" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="external\sfml\include\SFML\Audio\SoundFileFactory.inl" />
@@ -264,6 +267,9 @@
     <None Include="external\sfml\include\SFML\System\Utf.inl" />
     <None Include="external\sfml\include\SFML\System\Vector2.inl" />
     <None Include="external\sfml\include\SFML\System\Vector3.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Lunch_Box.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -42,6 +42,9 @@
     <ClCompile Include="DrawingTools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CustomUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="external\sfml\include\SFML\Audio\AlResource.hpp">
@@ -371,6 +374,12 @@
     <ClInclude Include="DrawingTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="external\sfml\include\SFML\Audio\SoundFileFactory.inl">
@@ -400,5 +409,10 @@
     <None Include="external\sfml\include\SFML\System\Vector3.inl">
       <Filter>Header Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Lunch_Box.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
