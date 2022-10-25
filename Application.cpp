@@ -165,7 +165,7 @@ int Application::Start(int argResX, int argResY, float argViewSpeed)
 
         tileSelector.setSize(sf::Vector2f(gridSize_f, gridSize_f));
         tileSelector.setOutlineThickness(tileMap[1][1].getOutlineThickness());
-        tileSelector.setPosition(mousePosGrid.x * gridSize_f, mousePosGrid.y * gridSize_f);
+        tileSelector.setPosition(clip(mousePosGrid.x * gridSize_f, 0, mapSize * gridSize_f - gridSize_f), clip(mousePosGrid.y * gridSize_f, 0, mapSize * gridSize_f - gridSize_f));
         window.draw(tileSelector);
 
         //Draw UI
@@ -216,8 +216,8 @@ void Application::UpdateEvents(sf::RenderWindow& window)
                 }
             }
             else if ((event.type == sf::Event::MouseMoved) && drawing) {
-                BresenhamLineUndo(tileMap, startPos.x, startPos.y, clip<int>(prevPos.x, 0, mapSize - 1), clip<int>(prevPos.y, 0, mapSize - 1));
-                BresenhamLine(tileMap, startPos.x, startPos.y, clip<int>(mousePosGrid.x, 0, mapSize - 1), clip<int>(mousePosGrid.y, 0, mapSize - 1), drawColour);
+                BresenhamLineUndo(tileMap, startPos.x, startPos.y, prevPos.x, prevPos.y);
+                BresenhamLine(tileMap, startPos.x, startPos.y, mousePosGrid.x, mousePosGrid.y, drawColour);
                 prevPos = mousePosGrid;
             }
             else if (event.type == sf::Event::MouseButtonReleased) {
