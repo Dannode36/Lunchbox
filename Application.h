@@ -13,35 +13,31 @@ class Application
 public:
 	int resX{};
 	int resY{};
+	int mapSizeX;
+	int mapSizeY;
 
-	const int mapSize{ 32 };
+	bool drawGrid{ true };
 	float viewSpeed{};
 
-	double dragSpeedCoefficient{1};
+	double dragSpeedCoefficient{ 1 };
 
-	float drawColourArray[3]{0};
+	float drawColourArray[4]{ 0 };
 	sf::Color drawColour{};
-
-	int fromX{};
-	int fromY{};
-	int toX{};
-	int toY{};
-
-	std::string lastError{};
 
 	sf::View view{};
 
-	TileMap tileMap;
+	DrawingState drawState = STOP;
+	Canvas canvas{};
+	sf::VertexArray grid;
+	sf::VertexArray gridLines;
 
 	Application();
 	~Application();
 
 	void Update();
 	void UpdateEvents(sf::RenderWindow& window);
-	int Start(int resX, int resY, float viewSpeed);
+	int Start(const int resX, const int resY, const int mapSizeX, const int mapSizeY,const float viewSpeed);
 
-	TileMap LoadTileMap(int mapSize);
-	void Draw(int x, int y, sf::Color& colour);
 private:
 	void CalculateGridRenderBounds(int& fromX, int& toX, int& fromY, int& toY, int mapSize);
 

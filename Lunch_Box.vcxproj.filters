@@ -63,6 +63,12 @@
     <ClCompile Include="external\imgui\imgui-sfml-master\imgui-SFML.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="IO.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="StylePalette.cpp">
+      <Filter>Source Files\Drawing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawingTools.h">
@@ -397,6 +403,12 @@
     </ClInclude>
     <ClInclude Include="external\sfml\include\SFML\Window\WindowStyle.hpp">
       <Filter>Header Files\External</Filter>
+    </ClInclude>
+    <ClInclude Include="IO.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="StylePalette.h">
+      <Filter>Header Files\Drawing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

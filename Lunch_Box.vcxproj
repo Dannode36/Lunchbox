@@ -142,7 +142,9 @@
     <ClCompile Include="external\imgui\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="external\imgui\imgui-docking\imgui_widgets.cpp" />
     <ClCompile Include="external\imgui\imgui-sfml-master\imgui-SFML.cpp" />
+    <ClCompile Include="IO.cpp" />
     <ClCompile Include="Lunch_Box.cpp" />
+    <ClCompile Include="StylePalette.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -255,7 +257,9 @@
     <ClInclude Include="external\sfml\include\SFML\Window\Window.hpp" />
     <ClInclude Include="external\sfml\include\SFML\Window\WindowHandle.hpp" />
     <ClInclude Include="external\sfml\include\SFML\Window\WindowStyle.hpp" />
+    <ClInclude Include="IO.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="StylePalette.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="external\sfml\include\SFML\Audio\SoundFileFactory.inl" />
