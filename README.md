@@ -1,2 +1,2 @@
 # Lunchbox
- Currently just a 2D game, but will become a 2D game engine if all goes well
+ Currently just a pixel art editor, but will become a 2D game if all goes well
