@@ -23,5 +23,6 @@ enum DrawingState
 {
 	STOP,
 	PEN,
-	LINE
+	LINE,
+	COLORPICK
 };

@@ -10,7 +10,7 @@ public:
 	~StylePalette();
 	std::vector<sf::Color> colours{};
 private:
-
+	int count;
 };
 
 extern std::vector<StylePalette> palettes;

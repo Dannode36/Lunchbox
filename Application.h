@@ -7,6 +7,7 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 #include "DrawingTools.h"
+#include <SFML/Graphics/Texture.hpp>
 
 class Application
 {
@@ -27,6 +28,7 @@ public:
 	sf::View view{};
 
 	DrawingState drawState = STOP;
+	sf::Texture windowTex;
 	Canvas canvas{};
 	sf::VertexArray grid;
 	sf::VertexArray gridLines;

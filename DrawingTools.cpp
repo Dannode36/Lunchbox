@@ -1,9 +1,9 @@
 #include "DrawingTools.h"
 #include <deque>
-#include "CustomUtil.h"
 #include <iostream>
 
 std::deque<sf::Color> lineUndoQueue;
+sf::Vector2i zero(0, 0);
 
 Canvas::Canvas()
 {
@@ -90,8 +90,10 @@ void Canvas::ClearPrevLine(sf::VertexArray& vertArr, sf::Vector2i start, sf::Vec
     int iy((dy > 0) - (dy < 0));
     dy = abs(dy) << 1;
 
-    DrawPen(vertArr, sf::Vector2u(start), mapSize, lineUndoQueue.front());
-    lineUndoQueue.pop_front();
+    if (start.x < mapSize && start.y < mapSize) {
+        DrawPen(vertArr, sf::Vector2u(start), mapSize, lineUndoQueue.front());
+        lineUndoQueue.pop_front();
+    }
 
     if (dx >= dy)
     {
@@ -110,8 +112,10 @@ void Canvas::ClearPrevLine(sf::VertexArray& vertArr, sf::Vector2i start, sf::Vec
             error += dy;
             start.x += ix;
 
-            DrawPen(vertArr, sf::Vector2u(start), mapSize, lineUndoQueue.front());
-            lineUndoQueue.pop_front();
+            if (start.x < mapSize && start.y < mapSize) {
+                DrawPen(vertArr, sf::Vector2u(start), mapSize, lineUndoQueue.front());
+                lineUndoQueue.pop_front();
+            }
         }
     }
     else
@@ -131,14 +135,23 @@ void Canvas::ClearPrevLine(sf::VertexArray& vertArr, sf::Vector2i start, sf::Vec
             error += dx;
             start.y += iy;
 
-            DrawPen(vertArr, sf::Vector2u(start), mapSize, lineUndoQueue.front());
-            lineUndoQueue.pop_front();
+            if (start.x < mapSize && start.y < mapSize) {
+                DrawPen(vertArr, sf::Vector2u(start), mapSize, lineUndoQueue.front());
+                lineUndoQueue.pop_front();
+            }
         }
     }
     lineUndoQueue.clear();
 }
+
+
 void Canvas::DrawLine(sf::VertexArray& vertArr, sf::Vector2i start, sf::Vector2i end, sf::Vector2i prev, const int mapSize, const sf::Color& color)
 {
+    //Alternative to if statement wrap around all draw/add to queue lines of code
+    /*start = clip(start, zero, sf::Vector2i(mapSize - 1, mapSize - 1));
+    end = clip(end, zero, sf::Vector2i(mapSize - 1, mapSize - 1));
+    prev =clip(prev, zero, sf::Vector2i(mapSize - 1, mapSize - 1));*/
+
     ClearPrevLine(vertArr, start, prev, mapSize);
 
     int dx = end.x - start.x;
@@ -152,8 +165,11 @@ void Canvas::DrawLine(sf::VertexArray& vertArr, sf::Vector2i start, sf::Vector2i
     int iy((dy > 0) - (dy < 0));
     dy = abs(dy) << 1;
 
-    lineUndoQueue.push_back(vertArr[(start.x * mapSize * 4) + (start.y * 4)].color);
-    DrawPen(vertArr, sf::Vector2u(start), mapSize, color);
+    if (start.x < mapSize && start.y < mapSize) {
+        lineUndoQueue.push_back(vertArr[(start.x * mapSize * 4) + (start.y * 4)].color);
+        DrawPen(vertArr, sf::Vector2u(start), mapSize, color);
+    }
+
     if (dx >= dy)
     {
         // error may go below zero
@@ -171,8 +187,10 @@ void Canvas::DrawLine(sf::VertexArray& vertArr, sf::Vector2i start, sf::Vector2i
             error += dy;
             start.x += ix;
 
-            lineUndoQueue.push_back(vertArr[(start.x * mapSize * 4) + (start.y * 4)].color);
-            DrawPen(vertArr, sf::Vector2u(start), mapSize, color);
+            if (start.x < mapSize && start.y < mapSize) {
+                lineUndoQueue.push_back(vertArr[(start.x * mapSize * 4) + (start.y * 4)].color);
+                DrawPen(vertArr, sf::Vector2u(start), mapSize, color);
+            }
         }
     }
     else
@@ -192,8 +210,10 @@ void Canvas::DrawLine(sf::VertexArray& vertArr, sf::Vector2i start, sf::Vector2i
             error += dx;
             start.y += iy;
 
-            lineUndoQueue.push_back(vertArr[(start.x * mapSize * 4) + (start.y * 4)].color);
-            DrawPen(vertArr, sf::Vector2u(start), mapSize, color);
+            if (start.x < mapSize && start.y < mapSize) {
+                lineUndoQueue.push_back(vertArr[(start.x * mapSize * 4) + (start.y * 4)].color);
+                DrawPen(vertArr, sf::Vector2u(start), mapSize, color);
+            }
         }
     }
 }

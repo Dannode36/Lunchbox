@@ -197,11 +197,14 @@ void Application::UpdateEvents(sf::RenderWindow& window)
                 if (drawState == PEN) {
                     canvas.DrawPen(grid, mousePosGrid, mapSizeX, drawColour);
                 }
-                if (drawState == LINE) {
+                else if (drawState == LINE) {
                     canvas.DrawLine(grid, sf::Vector2i(lineStartPos), sf::Vector2i(mousePosGrid), sf::Vector2i(linePrevPos), mapSizeX, drawColour);
                     linePrevPos = mousePosGrid;
                 }
-            }
+                else if (drawState == COLORPICK) {
+                    drawColour = windowTex.copyToImage().getPixel(mousePosWindow.x, mousePosWindow.y);
+                }
+            } 
 
             //Cancel Drawing
             else if (event.type == sf::Event::MouseButtonReleased) {

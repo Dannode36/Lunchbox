@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Color.hpp>
 
 using TileMap = std::vector<std::vector<sf::RectangleShape>>;
 
-template <typename T>
-T clip(const T& n, const T& lower, const T& upper);
 int clip(const int& n, const int& lower, const int& upper);
+sf::Vector2i clip(sf::Vector2i n, sf::Vector2i lower, sf::Vector2i upper);

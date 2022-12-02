@@ -1,12 +1,11 @@
 #include "CustomUtil.h"
 
-template <typename T>
-T clip(const T& n, const T& lower, const T& upper)
+int clip(const int& n, const int& lower, const int& upper)
 {
 	return n <= lower ? lower : n >= upper ? upper : n;
 }
 
-int clip(const int& n, const int& lower, const int& upper)
+sf::Vector2i clip(sf::Vector2i n, sf::Vector2i lower, sf::Vector2i upper)
 {
-	return n <= lower ? lower : n >= upper ? upper : n;
+	return sf::Vector2i(clip(n.x, lower.x, upper.x), clip(n.y, lower.y, upper.y));
 }
