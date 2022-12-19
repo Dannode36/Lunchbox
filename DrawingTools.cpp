@@ -1,7 +1,7 @@
 #include "DrawingTools.h"
 #include <deque>
 #include <iostream>
-
+#include "Masks.h"
 std::deque<sf::Color> lineUndoQueue;
 sf::Vector2i zero(0, 0);
 
@@ -70,6 +70,19 @@ void Canvas::DrawPen(sf::VertexArray& vertArr, const sf::Vector2u point, const i
         vertArr[i + 1].color = color;
         vertArr[i + 2].color = color;
         vertArr[i + 3].color = color;
+    }
+}
+
+void Canvas::DialatePoint(sf::VertexArray& vertArr, sf::Vector2i point, const int mapSize) {
+    sf::Color col = vertArr[(point.x * mapSize * 4) + (point.y * 4)].color;
+    for (int x = -1; x < 2; x++)
+    {
+        for (int y = -1; y < 2; y++)
+        {
+            if (Masks::dialateMask[x + 1][y + 1] == 1) {
+                DrawPen(vertArr, sf::Vector2u(sf::Vector2i(x, y) + point), mapSize, col);
+            }
+        }
     }
 }
 
@@ -144,14 +157,8 @@ void Canvas::ClearPrevLine(sf::VertexArray& vertArr, sf::Vector2i start, sf::Vec
     lineUndoQueue.clear();
 }
 
-
 void Canvas::DrawLine(sf::VertexArray& vertArr, sf::Vector2i start, sf::Vector2i end, sf::Vector2i prev, const int mapSize, const sf::Color& color)
 {
-    //Alternative to if statement wrap around all draw/add to queue lines of code
-    /*start = clip(start, zero, sf::Vector2i(mapSize - 1, mapSize - 1));
-    end = clip(end, zero, sf::Vector2i(mapSize - 1, mapSize - 1));
-    prev =clip(prev, zero, sf::Vector2i(mapSize - 1, mapSize - 1));*/
-
     ClearPrevLine(vertArr, start, prev, mapSize);
 
     int dx = end.x - start.x;

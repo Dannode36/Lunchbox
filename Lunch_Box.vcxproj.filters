@@ -69,6 +69,9 @@
     <ClCompile Include="StylePalette.cpp">
       <Filter>Source Files\Drawing</Filter>
     </ClCompile>
+    <ClCompile Include="Masks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawingTools.h">
@@ -409,6 +412,9 @@
     </ClInclude>
     <ClInclude Include="StylePalette.h">
       <Filter>Header Files\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Masks.h">
+      <Filter>Header Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

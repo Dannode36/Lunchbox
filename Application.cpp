@@ -185,6 +185,7 @@ void Application::UpdateEvents(sf::RenderWindow& window)
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     drawState = PEN;
                     canvas.DrawPen(grid, mousePosGrid, mapSizeX, drawColour);
+                    canvas.DialatePoint(grid, sf::Vector2i(mousePosGrid), mapSizeX);
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right) {
                     lineStartPos = mousePosGrid;
@@ -196,6 +197,7 @@ void Application::UpdateEvents(sf::RenderWindow& window)
             else if ((event.type == sf::Event::MouseMoved)) {
                 if (drawState == PEN) {
                     canvas.DrawPen(grid, mousePosGrid, mapSizeX, drawColour);
+                    canvas.DialatePoint(grid, sf::Vector2i(mousePosGrid), mapSizeX);
                 }
                 else if (drawState == LINE) {
                     canvas.DrawLine(grid, sf::Vector2i(lineStartPos), sf::Vector2i(mousePosGrid), sf::Vector2i(linePrevPos), mapSizeX, drawColour);
