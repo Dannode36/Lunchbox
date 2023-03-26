@@ -24,7 +24,9 @@ std::string SaveImage(const std::string& filename, const sf::VertexArray& map, c
 
 sf::VertexArray LoadImage(Application& app, const std::string& filename, const int gridSize) {
 	sf::Image importImage;
-	importImage.loadFromFile(filename);
+	if (!importImage.loadFromFile(filename)) {
+		assert(false);
+	}
 	const int mapSizeX = importImage.getSize().x;
 	const int mapSizeY = importImage.getSize().y;
 
